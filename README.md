@@ -1,3 +1,4 @@
+```
 .MODEL SMALL                        ; Khai báo mô hình bộ nhớ nhỏ
 .STACK 100H                         ; Cấp phát 256 bytes cho stack
 
@@ -378,3 +379,4 @@ END_GAME:                           ; Nhãn kết thúc game
     INT 21H                         ; Kết thúc chương trình
 MAIN ENDP                           ; Kết thúc procedure chính
 END MAIN                            ; Kết thúc chương trình
+```
