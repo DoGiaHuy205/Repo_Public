@@ -1,4 +1,4 @@
-4# WatchDog UART — Tang Nano 9K
+# WatchDog UART — Tang Nano 9K
 
 Hệ thống Watchdog Timer cấu hình qua UART, triển khai trên FPGA **Sipeed Tang Nano 9K** (GW1NR-LV9QN88PC6/I5).
 
