@@ -69,13 +69,13 @@ Tầng Conv2 là khối phức tạp nhất về mặt định tuyến dữ li�
 │                                                                        │
 │ Kênh 1 vào ──> [conv2_buf_1 (60B)] ──> 25 pixels ─┐                    │
 │ Kênh 2 vào ──> [conv2_buf_2 (60B)] ──> 25 pixels ─┼──> [conv2_calc_1]  │──> Kênh 1 ra (8x8)
-│ Kênh 3 vào ──> [conv2_buf_3 (60B)] ──> 25 pixels ─┘  (w11, w12, w13)  │
+│ Kênh 3 vào ──> [conv2_buf_3 (60B)] ──> 25 pixels ─┘   (w11, w12, w13)  │
 │                                                   │                    │
 │                                                   ├──> [conv2_calc_2]  │──> Kênh 2 ra (8x8)
-│                                                   │  (w21, w22, w23)  │
+│                                                   │   (w21, w22, w23)  │
 │                                                   │                    │
 │                                                   └──> [conv2_calc_3]  │──> Kênh 3 ra (8x8)
-│                                                      (w31, w32, w33)  │
+│                                                       (w31, w32, w33)  │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
