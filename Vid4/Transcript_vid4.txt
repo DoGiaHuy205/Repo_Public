@@ -1,0 +1,37 @@
+4. The RTL Module of Convolution Buffer
+Once we obtain a CNN model, the next step is to design the RTL module in RTL design.
+There are many ways to implement the same CNN or in other words, many microarchitectures can be built to implement the same CNN architecture.
+Several methods exist, such as the naive method, matrix multiplication or Winograd.
+In this accelerator project, we will learn a microarchitecture that uses the simple naive method.
+Let's start by discussing how we store the image pixels in the FPGA.
+The input to the accelerator is a 28 by 28 bitmap image, totaling 784 pixels.
+Each pixel is an eight bit number.
+The 784 pixels are input to the accelerator serially, one pixel per clock cycle.
+Starting from the top left of the image and moving left to right, row by row.
+This is called raster scan order.
+Why is it streamed serially?
+Because with serial data input, there is no need for large image wide memory, and there's no need to wait for the full image to arrive before starting processing.
+Then we need to somehow store these pixels inside the FPGA.
+You can use block memory or in this case the design uses register files.
+The register files have a data width of eight bits and contain a total of 140 elements.
+It can hold up to five rows, each consisting of 28 pixels.
+It is designed to hold only five rows because the kernel size is five.
+Once a row is processed, the buffer will be overwritten with the next row until all the rows in the image are covered.
+This register file is often referred to as a line buffer.
+You may wonder why the buffer isn't designed to hold all 784 pixels.
+The answer is that this is an example of optimizing memory usage as the FPGA has limited resources to perform naive convolution, we need to read every five by five pixel patch of the image from the line buffer, then move one pixel to the right and repeat the process until reaching the end of the row in each clock cycle.
+Five by five pixels of output data will be processed.
+This five by five patch, or 25 pixels will be output from the line buffer every clock cycle for the next stage, the convolution calculation.
+In total, we will have 24 by 24 or 576 such streams of 25 pixels wide 24 times 24, because it matches the output size of the convolution operation in the first layer.
+So here's how the Verilog code works.
+First, we have a buffer.
+We fill this buffer with a stream of pixel data until it holds 140 values.
+Once it reaches 140, we can start reading the data in five by five patches and outputting them to the next block when outputting the data.
+We follow five patterns because the contents of the line buffer are updated with a new row of pixels each time.
+This means we need to ensure that the five by five patch stays in the correct order for the correct convolution.
+If you run the RTL simulation and look closely at the input of the buffer, you'll see a stream of 784 eight bit data values being input serially at the output of the buffer.
+You will see 25 lines of data output, each eight bits wide.
+These correspond to a five by five patch of the image.
+Then we have 24 of these, which corresponds to the convolution output width of 24.
+During this width, the valid signal is high.
+Then we also have 24 groups of high valid signals, which correspond to the convolution output height of 24.
