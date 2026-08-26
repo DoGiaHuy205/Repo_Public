@@ -152,17 +152,17 @@ decision [3:0] : ===============================================================
 Toàn bộ mã nguồn Verilog trong thư mục [`rtl_pipelined/rtl/module/`](file:///c:/Gowin/Gowin_V1.9.12_x64/cnn_mnist/rtl_pipelined/rtl/module/) là **Synthesizable Verilog thuần túy (Vendor-independent)**, hoàn toàn tương thích để tổng hợp trên phần mềm **Gowin EDA (Gowin_V1.9.12_x64)**.
 
 ```
-┌────────────────────────────────────────────────────────────────────────┐
-│             LỘ TRÌNH TRIỂN KHAI LÊN TANG PRIMER 20K                    │
-├────────────────────────────────────────────────────────────────────────┤
-│ 1. Tạo project Gowin EDA mới cho chip GW2A-LV18PG256C8/I7              │
-│ 2. Import toàn bộ module RTL + 16 file .mem vào project                │
-│ 3. Thiết kế module giao tiếp UART Receiver (nhận ảnh 784B từ PC)       │
-│ 4. Thiết kế module UART Transmitter (gửi kết quả dự đoán về PC)        │
-│ 5. Gán chân chân IO (Physical Constraints .cst) cho Tang Primer 20K    │
-│ 6. Biên dịch Bitstream (.fs) và Nạp vào FPGA qua Gowin Programmer      │
+┌─────────────────────────────────────────────────────────────────────────┐
+│             LỘ TRÌNH TRIỂN KHAI LÊN TANG PRIMER 20K                     │
+├─────────────────────────────────────────────────────────────────────────┤
+│ 1. Tạo project Gowin EDA mới cho chip GW2A-LV18PG256C8/I7               │
+│ 2. Import toàn bộ module RTL + 16 file .mem vào project                 │
+│ 3. Thiết kế module giao tiếp UART Receiver (nhận ảnh 784B từ PC)        │
+│ 4. Thiết kế module UART Transmitter (gửi kết quả dự đoán về PC)         │
+│ 5. Gán chân chân IO (Physical Constraints .cst) cho Tang Primer 20K     │
+│ 6. Biên dịch Bitstream (.fs) và Nạp vào FPGA qua Gowin Programmer       │
 │ 7. Viết script Python giao tiếp qua cổng COM để nhận dạng thời gian thực│
-└────────────────────────────────────────────────────────────────────────┘
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
