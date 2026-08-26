@@ -95,13 +95,19 @@ Dòng 4 │ buffer[112] buffer[113] ... buffer[138]  buffer[139]   │
 
 Mỗi chu kỳ xung nhịp khi cờ hợp lệ, bộ đệm xuất ra đồng thời **25 giá trị 8-bit** (`data_out_0` đến `data_out_24`) tạo thành một ma trận $5 \times 5$:
 
-$$\begin{bmatrix}
-\text{data\_out\_0} & \text{data\_out\_1} & \text{data\_out\_2} & \text{data\_out\_3} & \text{data\_out\_4} \\
-\text{data\_out\_5} & \text{data\_out\_6} & \text{data\_out\_7} & \text{data\_out\_8} & \text{data\_out\_9} \\
-\text{data\_out\_10} & \text{data\_out\_11} & \text{data\_out\_12} & \text{data\_out\_13} & \text{data\_out\_14} \\
-\text{data\_out\_15} & \text{data\_out\_16} & \text{data\_out\_17} & \text{data\_out\_18} & \text{data\_out\_19} \\
-\text{data\_out\_20} & \text{data\_out\_21} & \text{data\_out\_22} & \text{data\_out\_23} & \text{data\_out\_24}
-\end{bmatrix}$$
+```
+┌─────────────┬─────────────┬─────────────┬─────────────┬─────────────┐
+│ data_out_0  │ data_out_1  │ data_out_2  │ data_out_3  │ data_out_4  │
+├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+│ data_out_5  │ data_out_6  │ data_out_7  │ data_out_8  │ data_out_9  │
+├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+│ data_out_10 │ data_out_11 │ data_out_12 │ data_out_13 │ data_out_14 │
+├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+│ data_out_15 │ data_out_16 │ data_out_17 │ data_out_18 │ data_out_19 │
+├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+│ data_out_20 │ data_out_21 │ data_out_22 │ data_out_23 │ data_out_24 │
+└─────────────┴─────────────┴─────────────┴─────────────┴─────────────┘
+```
 
 ---
 
@@ -122,9 +128,9 @@ Do các dòng trong buffer $140$ byte bị ghi đè xoay vòng theo thời gian,
 ### 4.2. Quản lý tọa độ không gian (`w_idx`, `h_idx`) và cờ `valid_out_buf`
 
 * Chiều rộng ảnh $W = 28$, Kernel $K = 5 \implies$ Số vị trí cửa sổ hợp lệ trên 1 dòng là $28 - 5 + 1 = 24$.
-* Khi $w\_idx$ chạy từ $0 \to 23$: Cửa sổ nằm trọn vẹn trong biên ảnh $\to$ `valid_out_buf = 1` (Dữ liệu 5x5 hợp lệ để đưa sang khối nhân cộng tích chập).
-* Khi $w\_idx$ từ $24 \to 27$: Cửa sổ bị tràn ra ngoài viền phải của ảnh $\to$ `valid_out_buf = 0` (Vùng không hợp lệ).
-* Khi $w\_idx = 27$: Hoàn thành 1 dòng, $w\_idx$ quay về $0$, `buf_flag` tăng lên $1$, và $h\_idx$ tăng lên $1$.
+* Khi `w_idx` chạy từ $0 \to 23$: Cửa sổ nằm trọn vẹn trong biên ảnh $\to$ `valid_out_buf = 1` (Dữ liệu 5x5 hợp lệ để đưa sang khối nhân cộng tích chập).
+* Khi `w_idx` từ $24 \to 27$: Cửa sổ bị tràn ra ngoài viền phải của ảnh $\to$ `valid_out_buf = 0` (Vùng không hợp lệ).
+* Khi `w_idx = 27`: Hoàn thành 1 dòng, `w_idx` quay về $0$, `buf_flag` tăng lên $1$, và `h_idx` tăng lên $1$.
 
 ---
 

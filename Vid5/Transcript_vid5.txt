@@ -1,0 +1,32 @@
+6. The RTL Module of Convolution Calculation
+In this video we will go through the convolution calculation module.
+The input to this module is the output stream from the line buffer module.
+A five by five patch of the image is provided as input on every clock cycle.
+So to calculate the convolution, we need to compute the dot product between this five by five image patch and the five by five kernel.
+Then we add the bias value.
+Afterward, the dot product operation consists of multiplication and addition operations.
+So the naive implementation of this operation is just using a combinational circuit like this.
+It will multiply the inputs with the kernel, add all the results, and then add the bias at the end.
+While this circuit works well in RTL simulation, it may cause a long critical path.
+During FPGA synthesis, every operation has a propagation delay.
+The critical path is the longest sequence of operations that determines the maximum clock frequency.
+So we need to optimize this by using a pipelining approach.
+Pipelining means adding several registers to break a long critical path into shorter, smaller paths.
+This is the optimized pipeline design for the convolution calculation.
+We add several registers to divide the computation into multiple stages.
+Here is the Verilog implementation of the basic or vanilla version of the convolution calculation module.
+First, we load the weights and biases previously obtained from the model into register files.
+We have three sets of five by five kernels, one file for each set and one file for the biases.
+Next, the multiplication and addition operations are implemented as a fully combinational circuit.
+Since we have three channels, we instantiate three such circuits.
+The bias addition is also included at the end.
+We can compare it with the pipelined version, where additional registers are added for each channel.
+The dot product calculation is broken into four stages.
+In the first stage, we perform the multiplications, and in the second to fourth stages we perform the additions.
+Lastly, because we added four stages of pipeline registers, the output will have a latency of four clock cycles compared to the basic version.
+Therefore, we need to adjust the output valid signal by delaying it using four registers.
+This is the simulation output of the convolution calculation.
+The input consists of 25 parallel data points from the convolution buffer output.
+The result of this convolution calculation is a 24 by 24 feature map.
+We have three channels of these feature maps.
+If we check the latency, you will see that the delay from input to output is four clock cycles.
