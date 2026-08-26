@@ -1,0 +1,30 @@
+8. CNN Layers Integration
+In this video, we'll combine all the modules we've developed so far into one complete CNN accelerator core.
+Here is the block diagram of the accelerator, illustrating how each module connects together to form the full system.
+We have already developed the convolution buffer and convolution calculation modules.
+Now we will integrate them into a single module called the convolution layer.
+This is the Verilog implementation.
+In this module, we simply instantiate the convolution buffer and convolution calculation modules and connect the appropriate signals between them.
+Next, for the max pooling and ReLU module, we have already developed that as well.
+The second layer of convolution, max pooling and ReLU is similar to the first layer, but differs in size and channel configuration.
+Here is the Verilog implementation of the second convolution buffer.
+The overall structure is the same as the layer one, but the size is different.
+This one processes a 12 by 12 input instead of 28 by 28.
+Because the output size of the first max pooling layer is 12 by 12.
+For the convolution calculation in layer two, we have 325 by 25 inputs instead of just one as in layer one.
+These inputs come from three different convolution buffers.
+Then for the output there is only one channel instead of three, like in layer one.
+So in the final output, the results from the three channels are combined into one by adding them together.
+This is the Verilog implementation for layer two.
+We instantiate three buffer modules and three calculation modules, each using a different set of weight files.
+At the final step, we add the bias value to the output of each calculation module.
+Next, for the max pooling and ReLU module, we reuse the same design as in layer one, but adjust it to handle the different input size of layer two.
+Next, for the fully connected layer and the comparator module, we have already developed those as well.
+Now we are ready to put all these modules together.
+We will do this in the testbench file.
+First we instantiate the modules and connect the appropriate signals.
+Then we read the sample image of the digit three into a variable called pixels.
+Next, we stream the 784 pixel data values into the first convolution layer module.
+This is the simulation result.
+The input pixels are shown here and the output correctly indicates the digit three as confirmed by the output.
+Valid signal.
