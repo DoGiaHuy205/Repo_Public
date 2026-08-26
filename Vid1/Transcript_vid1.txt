@@ -1,0 +1,102 @@
+1. Introduction to Convolutional Neural Network
+Let's start with the scope of artificial intelligence.
+AI in the hierarchy we have AI, machine learning and deep learning.
+AI is the broadest field.
+AI is about building machines or systems that can perform tasks that usually require human intelligence.
+Machine learning ML is a subset of AI.
+ML focuses on building systems that learn from data and improve over time without being explicitly programmed for every task.
+Deep learning is a subset of ML that uses neural networks with many layers to model complex patterns in data.
+Because deep learning has many layers, it requires a lot of computational power.
+Now the question is why do we need FPGAs to accelerate deep learning if we already have GPUs?
+Well, GPUs are usually used for training deep learning models or for server applications where power consumption is not an issue.
+For example, in the case of ChatGPT, server power is not an issue, but for low power applications such as IoT devices, we can't use GPUs.
+So that's why we use FPGAs, which consume less power compared to GPUs.
+Let's take a look at an IoT device like the Amazon Echo voice assistant.
+The way this device works is by constantly listening and sending the data to the server for deep learning processing.
+So we have two concerns here the bandwidth of the internet connection and privacy due to the potential for eavesdropping.
+What if we could do the deep learning processing locally on the device?
+Then we can solve the bandwidth and privacy concerns.
+To run AI locally on a device, we often need low power consumption but higher computational power than what a typical microcontroller can provide.
+So that is why an FPGA is often used because of its capability for customized parallel processing.
+For even lower power consumption, we can fabricate our own chip.
+However, in order to do that, an FPGA is required to emulate and test the design before tapeout into an ASIC.
+Now let's begin our learning with neural networks.
+Neural networks are loosely inspired by the structure and function of the human brain, especially how neurons communicate with each other.
+This is an example of a single neuron of neural networks.
+It performs mathematical computation that consists of multiplication, addition, and activation function.
+The weights in a neural network are randomly initialized and then learned during the training process.
+That's what makes the network smart.
+Over time, neural networks consist of multiple neurons organized into layers, input layer, hidden layers, and output layer.
+This kind of network is also called fully connected.
+Every neuron in one layer is connected to every neuron in the next layer.
+Nothing is left out.
+The term deep learning generally refers to a type of neural network that has more than two hidden layers.
+Now let's take a look at this example of digit classification using a neural network.
+The input image is 28 by 28 pixels, or 784 pixels in total.
+Each pixel is represented by a normalized grayscale value 0 to 1.
+All of the pixels are fed into the network and get multiplied by the weights.
+The output is one of the ten possible neurons that has the highest probability.
+This kind of network is fine for small sized images, but has drawbacks with large sized images.
+So we have an improved architecture called a convolutional neural network CNN.
+So what is the problem with neural networks?
+Well, images are not just a collection of random pixels.
+They have spatial relationships.
+Nearby pixels are more likely to be related to each other than distant pixels.
+In a fully connected network, each pixel is treated independently, with no understanding of the spatial relationships between them.
+In a fully connected layer, each neuron is connected to every single pixel of the image, which means the network has to learn a huge number of parameters for a 28 by 28 image 784 pixels.
+A fully connected layer to a hidden layer with 128 neurons would require around 100,000 parameters just for one layer.
+So this is why CNN is usually used for image classification, especially for larger image input.
+This is a typical architecture of CNN.
+CNN also does use fully connected layers, but only at the end of the network.
+The most common and fundamental layers are convolution and pooling.
+A complete convolutional layer in a CNN typically consists of the following steps.
+Padding, which is optional.
+Convolution bias.
+Addition and activation function.
+This is an illustration of how convolution process work.
+Convolution is the process of sliding a small filter kernel over an input image, performing element wise multiplication and summing the results to produce a feature map.
+In this illustration, we have a five by five image and a three by three kernel with a stride of one, resulting in a three by three feature map.
+In a real CNN, we usually have more than one kernel, resulting in more than one feature. Map output.
+In a CNN, a padding layer is an optional layer used to add extra pixels, usually zeros around the border of the input image or feature map.
+Before applying the convolution operation, padding is used to control the output size.
+Without padding, every convolution reduces the spatial size, height, and width of the feature.
+Map padding ensures that the filter can center over the edge pixels too, allowing the model to learn from the entire image, not just the middle.
+We can use this formula to calculate the output size of the feature map after the convolution process.
+For example, if the image size is 28 by 28, the kernel size is five by five, the padding is zero, and the stride is one.
+Then the output size of the convolution is 24 by 24.
+Mathematically, a convolutional layer without padding is described by this equation.
+It consists of the convolution process, bias addition, and activation.
+Function bias is a learnable parameter that is added to the result of the convolution operation.
+The bias is usually added to the entire feature map after the convolution is applied.
+After bias addition, the result is passed through an activation function like ReLU or sigmoid.
+The activation function introduces non-linearity to the network, allowing it to learn more complex patterns.
+ReLU is the most common activation in CNNs because it helps the model train faster and is simple to compute.
+ReLU is mathematically defined by this equation.
+This means that if the input x is positive, ReLU returns the same value.
+If the input x is negative, ReLU returns zero.
+Now let's move on to the pooling layer.
+Pooling is a downsampling operation that reduces the spatial size of the feature map after convolution.
+There are two primary types of pooling max pooling and average pooling.
+This is an illustration of how the max pooling process works.
+In this illustration, we have a 4x4 feature map and a two by two pooling size with a stride of two, resulting in a two by two feature map.
+For every two by two patch, we choose the maximum value.
+If we use average pooling, then we average the numbers in every two by two patch.
+We can use this formula to calculate the output size of the feature map after the pooling operation.
+For example, if the feature map size is 24 by 24, the kernel size is two by two and the stride is two, then the output size of the pooling will be 12 by 12.
+So here is the big picture of a CNN.
+It consists of convolutional layers, pooling layers, and fully connected layers.
+The convolutional layers consist of padding, convolution itself, bias addition, and activation function.
+ReLU is the most common activation in CNNs.
+In pooling layers, max pooling is the most common pooling method in CNNs.
+The fully connected layers are essentially the same as the layers used in the traditional neural network.
+Here is a good 3D visualization of a CNN for digit classification.
+It consists of two convolutional layers, two pooling layers, and three fully connected layers.
+You may have a question about how to design a CNN architecture from scratch.
+To design a CNN architecture, we have many parameters to consider, such as how many layers we should have, how many kernels we should use, and so on.
+How do we determine all of these parameters?
+Well, all of these parameters are called hyperparameters.
+These hyperparameters are not learned by the model.
+Instead, they must be manually set before training.
+Designing a CNN architecture involves a combination of experience, domain knowledge, and hyperparameter tuning, with trial and error being a key part of the process.
+The topic of designing a CNN architecture is beyond the scope of this course.
+In this course, we will use a CNN architecture that has already been tested.

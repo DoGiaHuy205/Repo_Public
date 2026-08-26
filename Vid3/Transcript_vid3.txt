@@ -1,0 +1,60 @@
+4. CNN Model for MNIST Digit
+In this lecture, I will walk you through the code for the CNN model that will be used in our accelerator.
+The model I am using comes from this reference.
+It uses the Python programming language and the PyTorch library.
+However, this is not a course on CNNs or machine learning model development, so I assume you already have a basic familiarity with these topics.
+First, open the Jupyter Notebook, then import the necessary libraries.
+Make sure that the required libraries are already installed, otherwise you will encounter an error.
+Next, this code is used to download the mNIST dataset from an online source and store it in the folder named data.
+Both the training set and the test set will be downloaded.
+Next, this code will divide the dataset into batches defined by the batch size, both for the training and test sets.
+Next, we create a CNN class.
+In the initialization method, we create the CNN layers based on the architecture.
+The first convolutional layer has one input channel, three output channels, and a kernel size of five by five.
+The second convolutional layer has three input channels, three output channels, and a kernel size of five by five.
+The max pooling layer has a two by two kernel size.
+The fully connected layer has 48 input units and ten output units.
+We also create several NumPy arrays filled with zeros.
+These arrays are used for debugging purposes.
+Next we define the forward method.
+In this method, we process the input through the first convolutional layer, followed by ReLU activation and max pooling.
+The same steps are applied to the second convolutional layer convolution, ReLU and max pooling.
+After that, we flatten the output and pass it through the fully connected layer.
+Next, we can print the model and check how many parameters it has.
+It has 796 parameters, which is the same as we calculated before.
+Next we define the stochastic gradient descent optimizer with a learning rate of 0.01 and a momentum of 0.5.
+After that, we define a function to train the CNN model.
+This represents a typical training loop in PyTorch, which includes several important steps.
+Performing a feed forward pass.
+Calculating the loss.
+Performing back propagation and updating the model parameters using an optimizer.
+Next, we define a function to evaluate the model's performance on a test dataset.
+Finally, we create a loop with ten epochs.
+An epoch means one complete pass of the entire training dataset through the neural network during the training process.
+Inside this loop, we call the train and test functions.
+Next, we run the training process and wait for it to complete.
+The final result shows that the model achieves 96% accuracy.
+At this point, we have obtained the trained weight and bias values.
+Once the model is trained, we can save it so that we can simply load it later without retraining.
+Next, we can try testing the model with a bitmap image.
+First, load a bitmap image, convert it to a numpy array and display it using pyplot.
+Next, we convert the image to a format supported by the model.
+The grayscale values are converted from the 0 to 255 range to the 0 to 1 range.
+Finally, we pass the image to the model.
+We can change the input image by modifying the file name in the path.
+Now that we have the model, the next step is to design the RTL module.
+Before that, we need to extract the weight and bias values from the model we just trained and convert them into a suitable format.
+The PyTorch model uses 32 bit floating point numbers for the weight and bias values, but in FPGA, integer or fixed point numbers are commonly used due to their efficiency.
+In this accelerator, we are going to use eight bit numbers to represent the weight and bias.
+This process of converting floating point weights and activations into integers with lower precision to make models more efficient for hardware implementations is known as quantization.
+The quantization process starts with scaling.
+Scaling is done by multiplying by a factor to map the values into an integer range.
+In our case, we multiply it by a factor of 128.
+Why?
+Because in a signed eight bit integer, one bit is used for the sign indicating whether the value is positive or negative.
+So we only have seven bits or two to the power of seven to represent the magnitude.
+Next we need to convert the number to two's complement representation.
+Finally, we print them to a file as text in hexadecimal format.
+Later this file can be read by the RTL modules.
+We do the same process for the first convolutional, second convolutional and fully connected layers.
+So in our project folder we will have 16 memory files that contain weights and biases.

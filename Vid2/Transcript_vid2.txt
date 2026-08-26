@@ -1,0 +1,53 @@
+3. CNN Architecture for MNIST Digit
+One of the important things in developing a CNN accelerator for FPGA is the number of parameters it has.
+The parameters I am referring to are the weights and biases.
+The number of parameters matters because FPGAs typically have a limited amount of memory.
+This is a resource table that compares several zinc FPGA boards.
+If you look at the amount of block memory available, it falls within the range of several megabytes.
+So you need to consider this when designing a CNN accelerator.
+In addition to the block memory, FPGA boards usually also have DDR memory.
+However, using DDR memory can be more complicated than using block memory.
+You need to consider which parts of the weights need to be loaded from DDR memory into block memory, and when this should happen.
+If it is not properly designed, it may affect the performance of the accelerator.
+If you search on Google using the keyword CNN model for mNIST digit GitHub, you'll find a lot of results.
+As an FPGA engineer, your job is to choose the one that best suits your needs.
+For example, this repository contains many models with varying numbers of parameters ranging from around 6000 to around 1000.
+Another thing to consider is the type of layers used in the architecture.
+For example, this model has around 6000 parameters and only uses convolutional layers, max pooling, batch normalization, and dense fully connected layers.
+Meanwhile, the model with around 1000 parameters uses more types of layers, including separable convolution and dropout.
+This matters because when you're designing a system for an FPGA using pure HDL such as Verilog or VHDL.
+It can be a tedious and time consuming task.
+A model with more parameters might use fewer types of layers, which can result in less work when designing the corresponding HDL modules.
+As long as the number of parameters fits within the FPGAs memory and the accuracy meets the requirements, there is no need to complicate the design.
+In this course, we will be using a CNN model with fewer than 1000 parameters.
+Of course, in terms of accuracy, it doesn't reach 99%, but it does exceed 90%, which I believe is sufficient for learning purposes.
+This is the CNN architecture that we will use in this course.
+It uses two convolution layers, two max pooling layers, and one fully connected layer.
+The first convolutional layer has an input size of 28 by 28 by one, which corresponds to the size of the mNIST digit images.
+It then uses five by five by three filters with a stride of one.
+Therefore, the output feature map has dimensions 24 by 24 by three.
+We can also say that this convolution has one channel of input feature map and three channels of output feature map.
+After the convolution, we add the bias.
+This bias is added to every element of each channel.
+Therefore, in total we have three bias values, one for each output channel.
+The next step is to apply the ReLU activation to each channel.
+After that, we move to the first max pooling layer, which downsamples the feature map from 24 by 24 by 3 to 12 by 12 by three.
+The second convolutional layer has an input size of 12 by 12 by three.
+It uses five by five by three filters for each channel, with a stride of one.
+Since we have three input channels in total, we have five by five by nine filters.
+Here is how the output feature maps are calculated.
+The first output feature map is the result of the three input channels convolved with the kernels, and the results are added together.
+The same process is also applied to obtain the second and third output. Feature maps.
+Therefore, the final output shape is eight by eight by three.
+After the convolution, we also add the bias and apply the ReLU activation.
+The second max pooling layer downsamples the feature map from eight by eight by 3 to 4 by four by three.
+Next we have a flatten layer which reshapes the 2D feature map into a 1D vector.
+The flatten layer reshapes the feature map from 4x4 by 3 to 48 by one.
+Finally, the fully connected layer has 48 neurons in its hidden layer and ten neurons in the output layer.
+Now we can calculate the number of trainable parameters in this network.
+First, in the first convolutional layer we have five by five by three for the kernel and one by three for the bias.
+Next, in the second convolutional layer, we have five by five by nine for the kernel and one by three for the bias.
+Next, in the fully connected layer we have 48 by ten for the weights and one by ten for the bias.
+If we sum all of these, we get a total of 796 parameters.
+All of these parameters will be trained during the training process.
+The result of training is that it achieves 96% accuracy on the mNIST digit data set.
