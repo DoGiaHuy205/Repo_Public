@@ -1,0 +1,35 @@
+7. The RTL Module of Max Pooling and ReLU
+The output of the convolution in layer one is a 24 by 24 feature map, which corresponds to 576 values in a stream.
+This stream becomes the input to the max pooling and ReLU module.
+We can think of these 576 pixels as being arranged into 24 rows from row one to row 24.
+In our model, we use a two by two max pooling operation, for example, to compute one pooled value.
+We take elements one and two from the first row, and elements one and two from the second row.
+Then calculate the maximum among them.
+Then we compare the maximum value with zero.
+If it is greater than zero.
+We keep the value, otherwise we replace it with zero.
+This is the ReLU operation.
+To implement this functionality in RTL, we can use a line buffer that stores only one by 12 elements.
+This corresponds to a single row of the output from the max pooling and ReLU layer, which has a size of 12 by 12.
+Here is how the buffer works.
+A comparison operation checks the input values within every two by two patch.
+We use indexing to access these values.
+If the current value is larger than the value previously stored in the buffer, we replace the stored value with the current one.
+Otherwise we do nothing.
+This process ensures that in the end we retain the maximum value.
+Finally, we compare it to zero to perform the ReLU operation.
+The final output is a 12 by 12 feature map or 144 values in a stream.
+Here is the Verilog implementation of the max pooling and ReLU module.
+First we define the input and output streams.
+We have three of each because the feature map has three channels.
+Next we define the buffers.
+We have three buffers, each with one times 12 elements.
+Then we define pointers and flags for accessing the line buffers.
+Here is how we write the input.
+The first element of the two by two window is written directly to the buffer.
+The second and third inputs are compared with the previously stored values and only written if they are greater.
+The fourth input is also compared with the current maximum value, and the result is then compared with a zero to perform the ReLU operation.
+This is the simulation output of the max pooling and ReLU calculation.
+The input consists of 24 by 24 data values, with the input valid signal indicating when the input is valid.
+The result of the max pooling and ReLU operation is a 12 by 12 feature map.
+We have three channels of these feature maps and the output is indicated by the output valid signal.
