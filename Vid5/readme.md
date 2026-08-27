@@ -37,6 +37,10 @@ flowchart LR
 
 ## 2. Phiên bản mạch tổ hợp thuần (Vanilla Design) & Vấn đề đường trễ tới hạn (Critical Path)
 
+<p align="center">
+  <img src="pic1.png" alt="pic1" width="800">
+</p>
+
 Trong thư mục [`rtl_vanilla/`](file:///c:/Gowin/Gowin_V1.9.12_x64/cnn_mnist/rtl_vanilla/rtl/module/conv1_calc.v), phép tính được triển khai bằng mạch tổ hợp thuần (Pure Combinational Circuit):
 
 ```verilog
