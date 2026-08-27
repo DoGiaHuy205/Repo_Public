@@ -63,6 +63,10 @@ assign conv_out_1 = calc_out_1[19:8] + exp_bias[0];
 
 ## 3. Kỹ thuật Pipelining (Đường ống hóa) tăng tốc tần số xung nhịp
 
+<p align="center">
+  <img src="pic2.jpg" alt="pic2" width="700">
+</p>
+
 Để giải quyết vấn đề đường trễ tới hạn, phiên bản tối ưu [`rtl_pipelined/`](file:///c:/Gowin/Gowin_V1.9.12_x64/cnn_mnist/rtl_pipelined/rtl/module/conv1_calc.v) áp dụng kỹ thuật **Pipelining**:
 
 ```
