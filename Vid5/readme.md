@@ -38,7 +38,7 @@ flowchart LR
 ## 2. Phiên bản mạch tổ hợp thuần (Vanilla Design) & Vấn đề đường trễ tới hạn (Critical Path)
 
 <p align="center">
-  <img src="pic1.jpg" alt="pic1" width="800">
+  <img src="pic1.jpg" alt="pic1" width="900">
 </p>
 
 Trong thư mục [`rtl_vanilla/`](file:///c:/Gowin/Gowin_V1.9.12_x64/cnn_mnist/rtl_vanilla/rtl/module/conv1_calc.v), phép tính được triển khai bằng mạch tổ hợp thuần (Pure Combinational Circuit):
@@ -64,7 +64,7 @@ assign conv_out_1 = calc_out_1[19:8] + exp_bias[0];
 ## 3. Kỹ thuật Pipelining (Đường ống hóa) tăng tốc tần số xung nhịp
 
 <p align="center">
-  <img src="pic2.jpg" alt="pic2" width="700">
+  <img src="pic2.jpg" alt="pic2" width="800">
 </p>
 
 Để giải quyết vấn đề đường trễ tới hạn, phiên bản tối ưu [`rtl_pipelined/`](file:///c:/Gowin/Gowin_V1.9.12_x64/cnn_mnist/rtl_pipelined/rtl/module/conv1_calc.v) áp dụng kỹ thuật **Pipelining**:
