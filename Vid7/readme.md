@@ -52,6 +52,7 @@ flowchart LR
 ### 3.1. Phép nhân ma trận - vector và bài toán Critical Path
 
 Tầng Fully Connected thực hiện phép tính cho 10 nơ-ron ngõ ra:
+
 $$y_k = \sum_{i=0}^{47} \left(\text{Input}_i \times \text{Weight}_{k, i}\right) + \text{Bias}_k \quad (k = 0 \dots 9)$$
 
 * **Tổng số tham số:** $48 \times 10 = 480$ trọng số và $10$ giá trị bias (tổng cộng $490$ tham số).
