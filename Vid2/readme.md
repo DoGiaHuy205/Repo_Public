@@ -84,6 +84,10 @@ Khi tìm kiếm các kiến trúc mô hình CNN trên GitHub hoặc tài liệu 
 
 ## 3. Kiến trúc mạng CNN 796 tham số được lựa chọn
 
+<p align="center">
+  <img src="pic1.jpg" alt="pic1" width="900">
+</p>
+
 Trong dự án này, mô hình được tối ưu với quy mô **dưới 1000 tham số** (chính xác là **796 tham số**), đảm bảo chạy cực nhẹ và hiệu quả trên FPGA:
 
 ```mermaid
