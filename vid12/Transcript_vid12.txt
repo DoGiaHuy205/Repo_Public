@@ -1,0 +1,49 @@
+13. Backend and Frontend Development
+In this lecture, we are going to build an embedded web application as a user interface for our accelerator system.
+The final application will look like this.
+You can draw a digit on a canvas within the web UI, send it to the FPGA for processing, and then display both the prediction result and the performance metrics.
+To build this kind of web application, we are going to use the Flask framework for the backend.
+Flask is a lightweight web framework that uses the Python programming language.
+For the frontend, we are going to use HTML, CSS with Bootstrap, and JavaScript.
+This is the project folder structure for the Flask web app.
+In this structure, we have a templates folder and a static folder.
+These folder names must be exactly as shown because Flask requires them for rendering HTML files and serving static assets like CSS, JavaScript, and images.
+The main Python file is app.py, and cn_mnist.py contains the CNN class for software based computation.
+The trained weights file is also included in the project directory.
+Now, let's examine app.py, the main Python script that handles the backend logic.
+At the top of the file, we import the necessary libraries.
+These are essentially the same libraries used earlier when testing the functionality and performance of the accelerator.
+Next, there is a function responsible for programming the FPGA and initializing the DMA engine, including the allocation of input and output buffers.
+We declare the buffers as global variables so they can be accessed from outside the function.
+Next, there is a function that loads the trained model for performing software based inference using the CPU.
+This is the main Flask route responsible for handling requests from the web browser and returning the appropriate response.
+It will return index.html, which is our main page.
+Next, we define another Flask route that gets triggered when the user clicks the predict button in the web interface.
+Inside this function, we first decode the base 64 encoded image data, which is encapsulated in a JSON message received from the web page.
+After decoding, we convert it into a pixel array that can be used for prediction.
+We then use this pixel data for both hardware and software computation, measuring the computation time for each method.
+Finally, we send the prediction result, computation times, and speed up factor back to the web page in JSON format.
+This is the main section of the script, where we call the functions to program the FPGA and load the model.
+Then, we start the Flask web application.
+Now, let's move on to the frontend.
+The frontend consists of an HTML file located in the templates folder.
+In the static folder, we include CSS and JavaScript library files that support the functionality and styling of the HTML page.
+Don't forget to upload these files to the appropriate directory on your FPGA board.
+Now, let's examine index.html, which defines the user interface of the web application.
+This HTML layout uses the Bootstrap grid system, with two columns to organize the content side by side.
+On the left side, we have a canvas for drawing, buttons for making a prediction and clearing the canvas, and a text area to display the prediction output.
+On the right side, we display a graph of the computation times and a text label showing the speed up.
+All interactive functionality for this HTML page is handled by the myscript.js JavaScript file.
+Most of the code in this file is used to initialize the drawing canvas and set up the graph for displaying computation time.
+The functions for handling button actions are defined at the bottom of the file.
+For example, when the predict button is clicked, the image from the canvas is read and encoded in base 64 format.
+It is then sent to the backend using an HTTP post request.
+The response from the backend is displayed in the appropriate text labels and also plotted on the graph.
+To run the web application, you need to execute it with sudo because it requires access to hardware resources for programming the FPGA.
+Simply run the main Python file using this command.
+On the web browser, you can navigate to the IP address of your board.
+You can test the application by drawing a digit on the canvas and clicking the predict button.
+You can also view the server log displaying the received base 64 data and the prediction result on the FPGA console.
+So, in the end, we have successfully designed a CNN accelerator for digit classification on the FPGA and developed an embedded web application as the user interface.
+I hope you enjoyed this course and found it useful.
+Thank you for following along.
