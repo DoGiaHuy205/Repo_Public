@@ -1,0 +1,19 @@
+11. Block Design of ZYNQ System
+In this lecture, I will explain the Vivado project for the accelerator system after integrating it with the Zynq Processing System (PS).
+Since this is not a course on basic Vivado or Zynq system design, I will assume you are already familiar with using Vivado.
+For this course, I'm using the Kria KV260 Vision AI Starter Kit board, which runs the PYNQ framework.
+However, you can use any other Zynq board that supports the PYNQ framework with little to no modifications required.
+If you plan to use another board, make sure to check the resource usage and ensure the design fits your FPGA's capacity.
+The source code includes both the AXI stream wrapper and the CNN accelerator's core, along with a testbench for simulation.
+Shown here is the block design of the Zynq system used in this project.
+The system consists of the Zynq PS, an AXI DMA, multiple AXI interconnects, and the AXI stream based accelerator module.
+The AXI DMA includes one memory mapped configuration port, two memory mapped ports for DDR access through the PS, and two AXI stream interfaces, one for input to the accelerator and one for output.
+We also added an AXI stream FIFO to buffer the data to and from the DMA before it enters or exits our core.
+The following are the configuration settings for the AXI DMA, Zynq Processing System, and the two AXI stream FIFOs.
+Finally, the memory map shown here includes only the addresses related to the AXI DMA.
+After synthesis and implementation are complete, you can review the implementation results to analyze and verify the design.
+Here you can see the worst negative slack of our design.
+Since it is a positive value, it means the timing meets the 100 megahertz clock requirement from the PS.
+This formula allows you to determine the maximum achievable frequency of the design based on the timing results.
+You can also generate a detailed utilization report for our design.
+Here you can see the usage of flip-flops, look-up tables, and DSP blocks for each module in the accelerator.
