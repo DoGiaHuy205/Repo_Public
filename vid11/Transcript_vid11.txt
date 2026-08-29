@@ -1,0 +1,30 @@
+12. Functional and Performance Testing
+In the previous lecture, we learned about the Zynq system used for the CNN accelerator.
+In this lecture, we will test the system using the PYNQ framework.
+Before we begin, make sure that the bitstream file and the two accompanying files required to program the PYNQ overlay have been uploaded to your FPGA.
+What we are going to do here is read a bitmap file, convert it into an array of pixel data, and use AXI DMA to send it to our accelerator.
+From the Jupyter Notebook on your board, start by importing the necessary libraries and programming the FPGA using the overlay.
+Then, create the DMA object, followed by allocating the input and output buffers for the DMA transfer.
+After that, import the additional libraries needed to read a bitmap image from a file.
+Next, load and display the image, make sure it has been uploaded to the appropriate location on your FPGA board.
+Once the image is loaded, copy the pixel data into the DMA input buffer to prepare it for processing by the accelerator.
+Then, initiate the DMA transfer in both directions, sending the input and receiving the output.
+Finally, display the prediction result.
+You can try using a different bitmap file to ensure the system is functionally correct.
+Now that we are confident in the functionality, we can proceed to performance testing.
+We will compare the computation time between the hardware accelerator and a software implementation running on the Zynq ARM processor.
+Here's the setup.
+First, we will load the model for software based computation, run the prediction, and measure the time required to complete the process.
+Then, we will program the overlay, run the prediction on the hardware accelerator, and again, measure the time taken to complete the computation.
+From the Jupyter Notebook on your board, start by importing the necessary libraries for software based computation.
+You may need to install the torch library first by connecting your board to the internet and installing it using pip.
+Next, define the CNN class using the same structure as the one used during model training.
+Then, load the model weights from the corresponding file, ensure this file has already been uploaded to your FPGA.
+After setting up the model, follow the same process to make a prediction using the CNN running on the Zynq ARM processor.
+At this point, import the time library and measure the computation time for the software based CNN inference.
+Next, to measure the hardware computation time, we follow the same process as before.
+Program the bitstream using the overlay and run the prediction.
+We use the time library to measure the duration of the DMA transfer and the computation.
+By timing the complete DMA operation, we also capture the computation time of our CNN accelerator.
+To measure the speed up factor, we divide the hardware computation time by the software computation time.
+Computation time may vary depending on the board and the Linux OS scheduling on the Zynq ARM processor.
