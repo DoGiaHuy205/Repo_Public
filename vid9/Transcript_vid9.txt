@@ -1,0 +1,45 @@
+10. The RTL Module of AXI Stream Wrapper
+In the previous section, we learned how to design the RTL modules for the CNN accelerator core.
+Now in this section, we will integrate this core with the Zynq ARM processor.
+The image pixels will be stored in the DDR memory and sent to the accelerator core for processing.
+Then, we will use the Xilinx AXI DMA IP core to interface the accelerator with the DDR memory system.
+To achieve this, we need to develop a top level or wrapper module that enables our accelerator core to communicate using the standard AXI stream protocol.
+Currently, the input to the accelerator core is already in a stream, so all that needs to be done is to implement the handshaking signals of the AXI stream protocol.
+An AXI stream module typically has two sides, an input side and an output side.
+Each side transmits data in only one direction.
+In our example, the input refers to the image pixels sent from the AXI DMA to our core, while the output is the prediction result sent from our core back to the AXI DMA.
+Each AXI stream interface consists of the following mandatory signals: ready, data, valid, and last.
+On the input side, the ready signal is driven by our accelerator and sent to the AXI DMA, indicating that our core is ready to accept data pixels.
+Data transfer occurs when both the ready and valid signals are high (logic 1).
+When our core has received all the input pixels, it deasserts the ready signal, sets it to zero, signaling the AXI DMA to stop sending data and thus preventing data loss.
+The ready signal will go back to one after our core finishes the computation.
+Here is the implementation of the AXI stream signals for the input side in Verilog.
+First, the data signals are fed into a pipeline register and then passed to the convolution 1 module.
+Then, we have a finite state machine implemented using a counter based sequencer.
+The counter starts on the rising edge of the valid signal, so a rising edge detector circuit is also included.
+When the counter reaches a certain value, we assert or deassert the ready signal and the internal valid signal for the convolution 1 module.
+This is the simulation result.
+Once the valid signal is asserted by the AXI DMA, the counter begins counting.
+At the end of the pixel data stream, the ready signal should be deasserted to indicate that no more data should be sent.
+This condition occurs when the counter value is between 784 and 1281.
+After 1281, our core has finished the computation.
+The valid signal for the convolution 1 module must be asserted when the counter value ranges from 1 to 841, as per the module's required specification.
+On the output side, we have the output data along with the valid and last signals.
+The last signal indicates the final data of the stream packet.
+Since we only have one data item, we assert last at the same time as the valid signal.
+Here is the implementation of the AXI stream signals for the output side in Verilog.
+The data signal is connected to the output of the comparator module.
+When the counter reaches a certain value, the valid and last signals are asserted.
+The condition occurs when the counter reaches 1279 and the valid output from the comparator module is asserted.
+Here is the simulation result of the AXI stream wrapper module.
+As shown, we are simulating two image packets.
+We also observe two output predictions.
+We also have another testbench designed to test the module with 1000 different images.
+This allows us to calculate the overall accuracy of the CNN accelerator.
+The testbench is similar to the previous one, but instead of using just a single image, it processes 1000 different images sequentially.
+The test vector file contains digits from 0 to 9 arranged in sorted order.
+At the end of each prediction, we compare the predicted result with the expected label.
+If the prediction is correct, we increment the accuracy counter by one.
+Here is the simulation result from this testbench.
+The CNN accelerator achieved an accuracy of 90% over the 1000 test images.
+This is slightly lower than the original model's accuracy because the hardware design uses fixed point arithmetic instead of floating point, which introduces some precision loss.
