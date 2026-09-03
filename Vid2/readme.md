@@ -26,7 +26,7 @@ Khi thiết kế bộ tăng tốc CNN trên FPGA, **số lượng tham số (Wei
 flowchart TD
     subgraph OnChip["Bộ nhớ nội (On-chip Block RAM / BRAM)"]
         B1["Dung lượng giới hạn (Vài trăm KB đến vài MB)"]
-        B2["Băng thông cực cao (Truy xuất song song đa cổng)"]
+        B2["Băng thông cao (Truy xuất song song đa cổng)"]
         B3["Độ trễ thấp (1-2 chu kỳ xung nhịp)"]
         B4["Điều khiển trực tiếp từ RTL dễ dàng"]
     end
@@ -67,14 +67,14 @@ Khi tìm kiếm các kiến trúc mô hình CNN trên GitHub hoặc tài liệu 
 ├──────────────────────────────────────┤  ├──────────────────────────────────────┤
 │ • Dùng ít loại layer cơ bản:         │  │ • Dùng nhiều loại layer phức tạp:    │
 │   Conv standard, MaxPool, Dense      │  │   Separable Conv, Depthwise, Dropout │
-│ • Thiết kế HDL (Verilog) ĐƠN GIẢN    │  │ • Thiết kế HDL CỰC KỲ PHỨC TẠP       │
-│ • Tốn nhiều thanh ghi/BRAM hơn       │  │ • Tiết kiệm tham số nhưng tốn công    │
+│ • Thiết kế HDL (Verilog) ĐƠN GIẢN    │  │ • Thiết kế HDL PHỨC TẠP              │
+│ • Tốn nhiều thanh ghi/BRAM hơn       │  │ • Tiết kiệm tham số nhưng tốn công   │
 └──────────────────────────────────────┘  └──────────────────────────────────────┘
 ```
 
 ### Nguyên tắc đánh đổi (Trade-off) trong thiết kế phần cứng:
-* Thiết kế phần cứng bằng ngôn ngữ mô tả phần cứng thuần (Pure HDL như Verilog/VHDL) là một công việc tốn rất nhiều thời gian và công sức (tedious and time-consuming).
-* Một mô hình dù có số tham số ít hơn nhưng nếu sử dụng quá nhiều loại layer "lạ" (như Depthwise Separable Conv, Group Conv, v.v.) sẽ đòi hỏi viết và kiểm thử rất nhiều module RTL riêng biệt.
+* Thiết kế phần cứng bằng ngôn ngữ mô tả phần cứng thuần (Pure HDL như Verilog/VHDL) là một công việc tốn nhiều thời gian và công sức (tedious and time-consuming).
+* Một mô hình dù có số tham số ít hơn nhưng nếu sử dụng quá nhiều loại layer "lạ" (như Depthwise Separable Conv, Group Conv, v.v.) sẽ đòi hỏi viết và kiểm thử nhiều module RTL riêng biệt.
 * Ngược lại, một mô hình có số tham số vừa phải nhưng sử dụng **các layer chuẩn, đồng nhất (Uniform Layers)** sẽ giúp:
   - Tái sử dụng được module phần cứng (ví dụ: dùng chung logic Conv và MaxPool).
   - Rút ngắn thời gian phát triển và đóng gói RTL.
@@ -88,7 +88,7 @@ Khi tìm kiếm các kiến trúc mô hình CNN trên GitHub hoặc tài liệu 
   <img src="pic1.jpg" alt="pic1" width="900">
 </p>
 
-Trong dự án này, mô hình được tối ưu với quy mô **dưới 1000 tham số** (chính xác là **796 tham số**), đảm bảo chạy cực nhẹ và hiệu quả trên FPGA:
+Trong dự án này, mô hình được tối ưu với quy mô **dưới 1000 tham số** (chính xác là **796 tham số**), đảm bảo chạy nhẹ và hiệu quả trên FPGA:
 
 ```mermaid
 flowchart LR
@@ -188,7 +188,7 @@ $$\text{Tổng số tham số} = 78 + 228 + 490 = \mathbf{796 \text{ parameters}
   - $796$ tham số dạng 8-bit (`int8`) chỉ chiếm chưa đầy **800 Bytes**.
   - Dung lượng này hoàn toàn nằm gọn trong vài lát LUT hoặc 1 khối BRAM nhỏ nhất của bất kỳ chip FPGA nào (Zynq-7000, UltraScale+, Gowin GW2A-18C).
 * **Độ chính xác (Accuracy):**
-  - Mặc dù số tham số siêu nhỏ ($<1000$), mô hình vẫn đạt độ chính xác **$96\%$ trên tập kiểm thử MNIST (Test set)**.
+  - Mặc dù số tham số nhỏ ($<1000$), mô hình vẫn đạt độ chính xác **$96\%$ trên tập kiểm thử MNIST (Test set)**.
   - Đây là mức cân bằng lý tưởng (sweet spot) giữa hiệu năng nhận dạng và độ phức tạp phần cứng cho các hệ thống nhúng / Edge AI.
 
 ---

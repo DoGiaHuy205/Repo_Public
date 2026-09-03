@@ -47,9 +47,9 @@ flowchart TD
     end
 
     subgraph FPGA["FPGA (Field-Programmable Gate Array)"]
-        F1["Tiêu thụ điện năng cực thấp (Low Power)"]
+        F1["Tiêu thụ điện năng thấp (Low Power)"]
         F2["Khả năng xử lý song song tuỳ biến (Custom Parallelism)"]
-        F3["Độ trễ thực tế cực nhỏ, cố định (Deterministic Latency)"]
+        F3["Độ trễ thực tế nhỏ, cố định (Deterministic Latency)"]
         F4["Xử lý suy luận trực tiếp tại biên (On-device Edge AI)"]
         F5["Môi trường tạo mẫu (Prototyping) trước khi Tapeout ASIC"]
     end
@@ -110,6 +110,10 @@ Mạng Fully Connected gặp 2 nhược điểm nghiêm trọng khi xử lý hì
 
 ## 5. Mạng nơ-ron tích chập (Convolutional Neural Network - CNN)
 
+<p align="center">
+  <img src="pic3.png" alt="pic3" width="800">
+</p>
+
 Để giải quyết triệt để các hạn chế trên, kiến trúc **CNN** ra đời và trở thành chuẩn mực cho xử lý ảnh.
 
 ### Đặc điểm cốt lõi của CNN:
@@ -161,10 +165,10 @@ Trong đó:
    * Là hàm kích hoạt phổ biến và hiệu quả nhất trong CNN.
    * **Định nghĩa toán học:**
      $$f(x) = \max(0, x) = \begin{cases} x & \text{nếu } x \ge 0 \\ 0 & \text{nếu } x < 0 \end{cases}$$
-   * **Ưu điểm vượt trội của ReLU:**
+   * **Ưu điểm của ReLU:**
      - Giúp mô hình hội tụ nhanh hơn trong quá trình huấn luyện.
      - Tránh hiện tượng triệt tiêu gradient (Vanishing Gradient) như ở hàm Sigmoid/Tanh.
-     - Phép toán cực kỳ đơn giản trên phần cứng (trên phần cứng Verilog chỉ là phép kiểm tra bit dấu: nếu âm thì gán bằng 0, không tốn tài nguyên tính toán mũ/chia).
+     - Phép toán đơn giản trên phần cứng (trên phần cứng Verilog chỉ là phép kiểm tra bit dấu: nếu âm thì gán bằng 0, không tốn tài nguyên tính toán mũ/chia).
 
 ---
 
