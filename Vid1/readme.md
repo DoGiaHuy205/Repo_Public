@@ -162,8 +162,7 @@ Trong đó:
 2. **Hàm kích hoạt phi tuyến:** Đưa tính phi tuyến (Non-linearity) vào mạng để mạng có thể học được các mẫu phức tạp.
 3. **Hàm ReLU (Rectified Linear Unit):**
    * Là hàm kích hoạt phổ biến và hiệu quả nhất trong CNN.
-   * **Định nghĩa toán học:**
-     $$f(x) = \max(0, x) = \begin{cases} x & \text{nếu } x \ge 0 \\ 0 & \text{nếu } x < 0 \end{cases}$$
+   * **Định nghĩa toán học:**  $$f(x) = \max(0, x) = \begin{cases} x & \text{nếu } x \ge 0 \\ 0 & \text{nếu } x < 0 \end{cases}$$
    * **Ưu điểm của ReLU:**
      - Giúp mô hình hội tụ nhanh hơn trong quá trình huấn luyện.
      - Tránh hiện tượng triệt tiêu gradient (Vanishing Gradient) như ở hàm Sigmoid/Tanh.
