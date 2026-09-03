@@ -57,7 +57,7 @@ $$y_k = \sum_{i=0}^{47} \left(\text{Input}_i \times \text{Weight}_{k, i}\right) 
 
 * **Tổng số tham số:** $48 \times 10 = 480$ trọng số và $10$ giá trị bias (tổng cộng $490$ tham số).
 * **Cơ chế tính toán tuần tự 10 nơ-ron:** Sử dụng biến đếm `out_idx` ($0 \dots 9$). Tại mỗi bước `out_idx`, module tính toán tích vô hướng của 48 phần tử ngõ vào với 48 trọng số của nơ-ron thứ `out_idx`.
-* **Vấn đề Critical Path:** Việc nhân 48 phần tử và cộng dồn 48 tích + bias trong 1 chu kỳ duy nhất (phiên bản Vanilla) tạo ra đường trễ cực lớn. Do đó, thiết kế pipelined chia cây cộng thành **5 tầng thanh ghi**.
+* **Vấn đề Critical Path:** Việc nhân 48 phần tử và cộng dồn 48 tích + bias trong 1 chu kỳ duy nhất (phiên bản Vanilla) tạo ra đường trễ lớn. Do đó, thiết kế pipelined chia cây cộng thành **5 tầng thanh ghi**.
 
 ---
 
