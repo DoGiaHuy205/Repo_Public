@@ -24,11 +24,9 @@ Tài liệu này được biên soạn và hệ thống hoá chi tiết dựa tr
 
 Trong bức tranh toàn cảnh về khoa học máy tính, mối quan hệ giữa các lĩnh vực được phân cấp như sau:
 
-```mermaid
-graph TD
-    AI["Trí tuệ nhân tạo (Artificial Intelligence - AI)"] --> ML["Học máy (Machine Learning - ML)"]
-    ML --> DL["Học sâu (Deep Learning - DL)"]
-```
+<p align="center">
+  <img src="pic1.png" alt="pic1" width="300">
+</p>
 
 * **Trí tuệ nhân tạo (Artificial Intelligence - AI):** Lĩnh vực rộng lớn nhất, bao gồm việc chế tạo các hệ thống, máy móc có khả năng thực hiện các tác vụ đòi hỏi trí thông minh của con người.
 * **Học máy (Machine Learning - ML):** Là tập con của AI, tập trung vào việc xây dựng các thuật toán có khả năng học hỏi từ dữ liệu và tự cải thiện hiệu suất theo thời gian mà không cần phải lập trình cứng (hard-code) tường minh cho từng tác vụ.
@@ -67,6 +65,10 @@ flowchart TD
 ---
 
 ## 3. Mạng nơ-ron nhân tạo truyền thống (Fully Connected Network)
+
+<p align="center">
+  <img src="pic2.png" alt="pic2" width="500">
+</p>
 
 Mạng nơ-ron nhân tạo được lấy cảm hứng từ cấu trúc và phương thức hoạt động của các nơ-ron trong não người:
 
