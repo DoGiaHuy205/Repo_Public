@@ -75,10 +75,7 @@ Mạng nơ-ron nhân tạo được lấy cảm hứng từ cấu trúc và phư
 ### 3.1. Cấu tạo của một Nơ-ron đơn lẻ (Single Neuron)
 Mỗi nơ-ron thực hiện 3 bước tính toán chính:
 1. **Phép nhân (Multiplication):** Nhân từng giá trị ngõ vào $x_i$ với trọng số tương ứng $w_i$.
-2. **Phép cộng (Addition/Accumulation):** Tính tổng các tích và cộng thêm độ lệch (bias):
- 
-   $$z = \sum_{i} (x_i \cdot w_i) + b$$
-   
+2. **Phép cộng (Addition/Accumulation):** Tính tổng các tích và cộng thêm độ lệch (bias):  $$z = \sum_{i} (x_i \cdot w_i) + b$$
 3. **Hàm kích hoạt (Activation Function):** Đưa tổng $z$ qua hàm phi tuyến $f(z)$ để sinh ra ngõ ra $a = f(z)$.
 
 Trọng số ($w$) và độ lệch ($b$) ban đầu được khởi tạo ngẫu nhiên và sẽ được tối ưu dần thông qua quá trình huấn luyện (Training).
