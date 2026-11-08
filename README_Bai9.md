@@ -38,6 +38,70 @@
 
 ## 1. Tổng quan
 
+### 1.1. Tóm tắt nhanh: đây là mạch gì?
+
+| Câu hỏi | Trả lời ngắn |
+|---|---|
+| Đây là mạch gì? | Một bộ nguồn **DC-DC**: nhận một điện áp một chiều (DC) rồi đổi thành một điện áp một chiều khác, ổn định. Loại cụ thể là **converter full-bridge cách ly**, công suất khoảng 300 W. |
+| Tăng áp hay giảm áp? | **Giảm áp (step-down)**: vào 22–36 V (danh định 28 V), ra 12 V. Điện áp ra luôn thấp hơn điện áp vào. |
+| Có cách ly không? | **Có.** Phía vào và phía ra không nối điện với nhau (hai "mass" riêng là PGND và SGND). Năng lượng đi sang bên kia bằng từ trường qua biến áp. |
+| Giữ điện áp ra ổn định bằng cách nào? | Bộ điều khiển liên tục đo điện áp 12 V ở ngõ ra và tự chỉnh độ rộng xung đóng cắt, để điện áp ra không đổi khi tải hoặc điện áp vào thay đổi. |
+| Công suất | 12 V × 25 A = 300 W. |
+| Dùng ở đâu? | TI định hướng cho ứng dụng không gian chịu bức xạ, ví dụ xử lý dữ liệu và điều khiển (C&DH), tải trọng chụp ảnh quang học và radar **[D]**. |
+
+### 1.2. Giải thích cho người mới bắt đầu
+
+**Bài toán cần giải.** Có một nguồn 28 V (có thể dao động từ 22 V đến 36 V) và một thiết bị cần đúng 12 V với dòng tới 25 A. Cần một mạch đổi điện áp, và ở đây còn cần thêm hai yêu cầu: **hiệu suất cao** (ít toả nhiệt) và **cách ly** giữa nguồn vào với phía tải.
+
+**Vì sao không dùng điện trở hoặc IC ổn áp tuyến tính?** Loại này "đốt" phần điện áp thừa thành nhiệt. Ví dụ minh hoạ: hạ 28 V xuống 12 V ở 25 A thì phần thừa là (28 − 12) V × 25 A = **400 W** toả nhiệt, còn nhiều hơn cả 300 W đưa ra tải. Không thể dùng cách này.
+
+**Mạch này làm cách khác: đóng cắt cực nhanh (switching).** Thay vì đốt phần thừa, mạch dùng các công tắc bán dẫn bật/tắt rất nhanh, nhiều chục nghìn lần mỗi giây trở lên. Bộ điều khiển của thiết kế này có dải tần cấu hình 100 kHz – 2 MHz **[D]**; tần số thực tế do điện trở R105 đặt, tài liệu này chưa tính. Công tắc hoặc đóng hoặc mở nên gần như không tiêu tán nhiệt trong chính nó, nhờ đó hiệu suất cao.
+
+**Đường đi của năng lượng, từng bước:**
+
+| Bước | Việc xảy ra | Linh kiện tương ứng |
+|---|---|---|
+| 1. Băm DC thành xung | 4 công tắc xếp hình chữ H (cầu đầy đủ) bật tắt luân phiên, đẩy dòng qua cuộn sơ cấp biến áp lúc chiều này, lúc chiều kia, tạo ra xung vuông. Phải làm vậy vì **biến áp chỉ hoạt động với điện áp thay đổi**, không truyền được DC thẳng. | Q101–Q104 (GaN FET), điều khiển bởi U201/U202 |
+| 2. Hạ áp và cách ly | Biến áp có tỉ số 3:2 (sơ cấp nhiều vòng hơn thứ cấp) nên điện áp xung ở thứ cấp thấp hơn. Hai cuộn dây không nối điện với nhau, nên đây cũng là chỗ tạo ra sự cách ly. | T103 |
+| 3. Chỉnh lưu | Xung xoay chiều ở thứ cấp được đổi thành xung một chiều. Thay vì dùng diode (sụt áp, nóng), mạch dùng FET đóng mở đúng lúc, gọi là **chỉnh lưu đồng bộ**. | Q105/Q106, điều khiển bởi U203 |
+| 4. Làm phẳng | Cuộn cảm và các tụ "trung bình hoá" các xung thành một điện áp DC phẳng 12 V. | L101, C115–C125, C301–C304 |
+| 5. Hồi tiếp | Mạch đo 12 V ở ngõ ra, so với mức chuẩn nội của IC (0,613 V sau khi chia áp), rồi chỉnh độ rộng xung. Giống bộ điều nhiệt: nóng quá thì giảm, lạnh quá thì tăng. | U101, R124–R126, mạng bù ở COMP |
+
+**Vì sao điện áp ra thấp hơn điện áp vào?** Cuộn cảm và tụ ở ngõ ra chỉ lấy **giá trị trung bình** của dãy xung. Xung chỉ "bật" trong một phần thời gian của mỗi chu kỳ (phần này gọi là **duty cycle**, hay độ rộng xung), nên trung bình luôn thấp hơn đỉnh xung. Xung rộng hơn thì điện áp ra cao hơn, xung hẹp lại thì thấp hơn. Khi điện áp vào tụt từ 28 V xuống 22 V, bộ điều khiển tự mở rộng xung để vẫn giữ 12 V. Khi vào lên 36 V, nó thu hẹp xung. Họ mạch này gọi là **buck-derived** (phát triển từ mạch giảm áp buck, thêm biến áp), nên **chỉ giảm áp được**. Muốn tăng áp phải dùng họ mạch khác như boost hoặc flyback.
+
+**Ví dụ số (lý tưởng, chưa tính tổn hao).** Công suất ra 300 W thì công suất vào tối thiểu cũng 300 W, nên khi điện áp giảm thì dòng tăng:
+
+| Điện áp vào | Dòng vào tối thiểu ≈ 300 W / Vin | Dòng ra |
+|---|---|---|
+| 36 V | ≈ 8,3 A | 25 A |
+| 28 V | ≈ 10,7 A | 25 A |
+| 22 V | ≈ 13,6 A | 25 A |
+
+Thực tế dòng vào cao hơn các giá trị này vì mạch có tổn hao.
+
+**Bảng thuật ngữ cho người mới:**
+
+| Thuật ngữ | Giải thích ngắn |
+|---|---|
+| DC-DC converter | Mạch đổi một điện áp một chiều sang một điện áp một chiều khác. |
+| Step-down (buck) | Loại giảm áp: điện áp ra thấp hơn điện áp vào. |
+| Cách ly (isolation) | Hai phía của mạch không nối điện với nhau, chỉ truyền năng lượng và tín hiệu qua từ trường. Lợi ích điển hình là an toàn, chống nhiễu và tránh vòng đất (ground loop). |
+| Biến áp | Hai (hoặc nhiều) cuộn dây quấn trên cùng một lõi từ, truyền năng lượng giữa chúng bằng từ trường và đổi mức điện áp theo tỉ số vòng dây. |
+| Cuộn cảm | Cuộn dây "chống lại sự thay đổi của dòng điện", dùng để làm phẳng dòng. |
+| MOSFET / GaN FET | Công tắc bán dẫn. GaN FET là loại đóng cắt rất nhanh và ít tổn hao, hợp với nguồn đóng cắt tần số cao. |
+| Cầu đầy đủ (full-bridge) | Bốn công tắc xếp hình chữ H, cho phép đẩy dòng qua biến áp theo cả hai chiều. |
+| PWM, duty cycle | Điều chế độ rộng xung: giữ tần số cố định, thay đổi phần thời gian "bật" trong mỗi chu kỳ để điều khiển điện áp ra. |
+| Chỉnh lưu đồng bộ | Dùng FET thay diode để chỉnh lưu, giảm sụt áp và giảm toả nhiệt, quan trọng khi dòng ra lớn như 25 A. |
+| ZVS (zero-voltage switching) | Công tắc chỉ bật khi điện áp hai đầu nó đã về gần 0 V, nên ít tổn hao đóng cắt và ít nhiễu hơn. |
+| Hồi tiếp (feedback) | Đo điện áp ra rồi dùng kết quả đó để điều chỉnh mạch, nhằm giữ điện áp ra ổn định. |
+| PGND / SGND | Hai "mass" riêng của phía sơ cấp (vào) và phía thứ cấp (ra). Không được nối chung. |
+| Nguồn bias | Nguồn phụ 12 V cấp cho các IC điều khiển và driver, không phải nguồn công suất chính. Ở đây có hai nguồn bias riêng: +12Vp và +12Vs. |
+| kRad | Đơn vị đo liều bức xạ tích luỹ. "100 kRad" là mục tiêu ứng dụng không gian của thiết kế (xem lưu ý ở mục 1.3). |
+
+**Gợi ý cách đọc tài liệu này.** Người mới nên đọc mục 1 và mục 2 trước để nắm bức tranh chung. Các mục 4 đến 9 đi vào từng khối với tên linh kiện cụ thể, và dùng khi cần vẽ lại sơ đồ hoặc tra cứu.
+
+### 1.3. Thông số và đặc điểm kỹ thuật
+
 | Thông số | Giá trị |
 |---|---|
 | Điện áp vào | 22 – 36 V (danh định 28 V) **[S][D]** |
